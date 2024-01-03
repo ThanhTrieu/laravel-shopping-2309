@@ -39,7 +39,6 @@ class LoginController extends Controller
             'password' => $password,
             'status' => 1]
         )->first();
-        dd($infoUser->toArray());
         
         if(!empty($infoUser)){
             // dang nhap thanh cong

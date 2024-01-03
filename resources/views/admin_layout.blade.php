@@ -70,7 +70,8 @@
         <script src="{{ asset('admin/vendors/@coreui/chartjs/js/coreui-chartjs.js') }}"></script> --}}
         <script src="{{ asset('admin/vendors/@coreui/utils/js/coreui-utils.js') }}"></script>
         {{-- <script src="{{ asset('admin/js/main.js') }}"></script> --}}
-
+        <script src="{{ asset('admin/js/jquery-3.7.1.min.js') }}"></script>
+        
         @stack('javascripts')
     
       </body>

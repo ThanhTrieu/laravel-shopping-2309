@@ -1,5 +1,7 @@
 @extends('admin_layout')
 @section('title', 'Dashboard')
+@section('breadcrumb-item-1','Home')
+@section('breadcrumb-item-2','Dashboard')
 
 @section('content')
     <div class="row">

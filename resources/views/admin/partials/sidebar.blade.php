@@ -8,19 +8,38 @@
       </svg>
     </div>
     <ul class="sidebar-nav" data-coreui="navigation" data-simplebar="">
-      <li class="nav-item"><a class="nav-link" href="index.html">
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.dashboard') }}">
           <svg class="nav-icon">
             <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
-          </svg> Dashboard<span class="badge badge-sm bg-info ms-auto">NEW</span></a></li>
-      <li class="nav-title">Theme</li>
-      <li class="nav-item"><a class="nav-link" href="colors.html">
+          </svg> Dashboard
+          {{-- <span class="badge badge-sm bg-info ms-auto">NEW</span> --}}
+        </a>
+      </li>
+      <li class="nav-title">Manage</li>
+      <li class="nav-item"><a class="nav-link" href="#">
           <svg class="nav-icon">
             <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-drop"></use>
           </svg> Colors</a></li>
-      <li class="nav-item"><a class="nav-link" href="typography.html">
+      <li class="nav-item"><a class="nav-link" href="#">
           <svg class="nav-icon">
             <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
-          </svg> Typography</a></li>
+          </svg> Sizes</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">
+        <svg class="nav-icon">
+          <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+        </svg> Categories</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">
+        <svg class="nav-icon">
+          <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+        </svg> Tags</a></li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{ route('admin.products') }}">
+          <svg class="nav-icon">
+            <use xlink:href="vendors/@coreui/icons/svg/free.svg#cil-pencil"></use>
+          </svg> Products
+        </a>
+      </li>
       <li class="nav-title">Components</li>
       <li class="nav-group"><a class="nav-link nav-group-toggle" href="#">
           <svg class="nav-icon">

@@ -85,9 +85,9 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb my-0 ms-2">
           <li class="breadcrumb-item">
-            <!-- if breadcrumb is single--><span>Home</span>
+            <!-- if breadcrumb is single--><span>@yield('breadcrumb-item-1')</span>
           </li>
-          <li class="breadcrumb-item active"><span>Dashboard</span></li>
+          <li class="breadcrumb-item active"><span>@yield('breadcrumb-item-2')</span></li>
         </ol>
       </nav>
     </div>
