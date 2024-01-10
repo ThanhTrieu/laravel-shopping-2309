@@ -108,6 +108,12 @@
                 </div>
             @endif
 
+            @if (Session::has('error_insert_product'))
+                <div class="alert alert-danger">
+                    <p class="mb-0">{{ Session::get('error_insert_product') }}</p>
+                </div>
+            @endif
+
             <form class="border p-3" action="{{ route('admin.product.create') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
