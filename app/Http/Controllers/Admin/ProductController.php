@@ -191,6 +191,15 @@ class ProductController extends Controller
             if(!empty($galleryImage)){
                 $arrGalleryImage = json_decode($galleryImage, true);
             }
+            // xu ly hien thi product - color
+            $arrColors = ProductColor::select('color_id')->where('product_id',$idProduct)->get();
+            $arrColors = !empty($arrColors) ? array_column($arrColors->toArray(), 'color_id') : [];
+            // xu ly hien thi product - size
+            $arrSizes = ProductSize::select('size_id')->where('product_id', $idProduct)->get();
+            $arrSizes = !empty($arrSizes) ? array_column($arrSizes->toArray(), 'size_id') : [];
+            // xu ly hien thi Product - Tag
+            $arrTags = ProductTag::select('tag_id')->where('product_id', $idProduct)->get();
+            $arrTags = !empty($arrTags) ? array_column($arrTags->toArray(), 'tag_id') : [];
 
             return view('admin.product.edit',[
                 'categories' => $categories,
@@ -198,7 +207,10 @@ class ProductController extends Controller
                 'colors' => $colors,
                 'tags' => $tags,
                 'infoPd' => $infoPd,
-                'arrGalleryImage' => $arrGalleryImage
+                'arrGalleryImage' => $arrGalleryImage,
+                'arrColors' => $arrColors,
+                'arrSizes' => $arrSizes,
+                'arrTags' => $arrTags,
             ]);
         }
     }

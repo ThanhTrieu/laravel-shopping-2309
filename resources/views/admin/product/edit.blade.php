@@ -66,8 +66,12 @@
     </script>
     <script>
         $(function(){
-            $('#sale_price').prop('disabled', true);
-
+            let checkIsSale = "{{ $infoPd->is_sale }}";
+            if(checkIsSale === "0"){
+                $('#sale_price').prop('disabled', true);
+            } else {
+                $('#sale_price').prop('disabled', false);
+            }
             $('input[name="is_sale"]').change(function(){
                 if($(this).is(':checked')){
                     $('#sale_price').prop('disabled', false);
@@ -180,7 +184,10 @@
                             <label>Colors</label>
                             <select name="color_id[]" id="color_id" multiple>
                                 @foreach ($colors as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option
+                                        {{ in_array($item->id, $arrColors) ? 'selected' : '' }}
+                                        value="{{ $item->id }}"
+                                    >{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -188,7 +195,10 @@
                             <label>Sizes</label>
                             <select name="size_id[]" id="size_id" multiple>
                                 @foreach ($sizes as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name_letter }}</option>
+                                    <option
+                                        {{ in_array($item->id, $arrSizes) ? 'selected' : '' }}
+                                        value="{{ $item->id }}"
+                                    >{{ $item->name_letter }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -196,7 +206,10 @@
                             <label>Tags</label>
                             <select name="tag_id[]" id="tag_id" multiple>
                                 @foreach ($tags as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                    <option
+                                        {{ in_array($item->id, $arrTags) ? 'selected' : '' }}
+                                        value="{{ $item->id }}"
+                                    >{{ $item->name }}</option>
                                 @endforeach
                             </select>
                         </div>
