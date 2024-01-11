@@ -74,8 +74,10 @@
             }
             $('input[name="is_sale"]').change(function(){
                 if($(this).is(':checked')){
+                    $('#sale_price').val("{{ $infoPd->sale_price }}");
                     $('#sale_price').prop('disabled', false);
                 } else {
+                    $('#sale_price').val('');
                     $('#sale_price').prop('disabled', true);
                 }
             });
@@ -112,13 +114,13 @@
                 </div>
             @endif
 
-            @if (Session::has('error_insert_product'))
+            @if (Session::has('error_update_product'))
                 <div class="alert alert-danger">
-                    <p class="mb-0">{{ Session::get('error_insert_product') }}</p>
+                    <p class="mb-0">{{ Session::get('error_update_product') }}</p>
                 </div>
             @endif
 
-            <form class="border p-3" action="" method="POST" enctype="multipart/form-data">
+            <form class="border p-3" action="{{ route('admin.product.update',['id'=> $infoPd->id]) }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-sm-12 col-md-6">

@@ -9,6 +9,7 @@ use App\Models\Color;
 use App\Models\Size;
 use App\Models\Tag;
 use App\Http\Requests\StorePostProductRequest;
+use App\Http\Requests\UpdatePostProductRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Rules\SalePriceValidator;
 use App\Models\Product;
@@ -212,6 +213,67 @@ class ProductController extends Controller
                 'arrSizes' => $arrSizes,
                 'arrTags' => $arrTags,
             ]);
+        }
+    }
+
+    public function update(UpdatePostProductRequest $request)
+    {
+        $idProduct = $request->id;
+        $idProduct = is_numeric($idProduct) ? $idProduct : 0;
+        $infoPd = Product::find($idProduct);
+        if(empty($infoPd)){
+            return redirect()->back()->with('error_update_product', 'Update product Failure');
+        } else {
+            // kiem tra gia sale
+            $checkIsSale = $request->input('is_sale');
+            if($checkIsSale === 'on'){
+                // nguoi dung da tich - co nghia can nhap gia sale price
+                $validator = Validator::make($request->all(),[
+                    'sale_price' => ['required','numeric', new SalePriceValidator]
+                ],[
+                    'sale_price.required' => 'Vui long nhap gia khuyen mai',
+                    'sale_price.numeric' => 'Gia khuyen mai phai la so'
+                ]);
+                if ($validator->fails()) {
+                    return redirect()->back()
+                            ->withErrors($validator)
+                            ->withInput();
+                }
+                $price = $request->input('price');
+                $salePrice = $request->input('sale_price');
+                if($salePrice > $price){
+                    return redirect()->back()->with('error_sale_price', 'Gia sale nho hon gia goc');
+                }
+            }
+
+            // tien hanh upload danh sach anh
+            $arrayImages = [];
+            if($request->hasFile('list_image')){
+
+                // nguoi dung co upload lai danh sach anh
+                // kiem tra xem cac anh co dung ko?
+                $validatorImg = Validator::make($request->all(),[
+                    'list_image' => ['required', 'max:2048'],
+                    'list_image.*' => 'mimes:jpg,png,jpeg,gif,svg'
+                ],[
+                    'list_image.required' => 'Vui long chon anh san pham',
+                    'list_image.*.mimes' => 'Anh chi chap nhan : jpg,png,jpeg,gif,svg',
+                    'list_image.max' => 'Kich thuoc anh khong vuot qua 2mb',
+                ]);
+
+                if ($validatorImg->fails()) {
+                    return redirect()->back()
+                            ->withErrors($validatorImg)
+                            ->withInput();
+                }
+
+                foreach($request->file('list_image') as $img){
+                    $nameImg = $img->getClientOriginalName();
+                    $img->move(public_path() . '/uploads/images/products/', $nameImg);
+                    $arrayImages[] = $nameImg;
+                }
+            }
+
         }
     }
 }
