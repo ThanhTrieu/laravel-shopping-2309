@@ -96,7 +96,7 @@
                                 <a class="btn btn-info btn-sm" href="#"> View </a>
                             </td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="#"> Edit </a>
+                                <a class="btn btn-primary btn-sm" href="{{ route('admin.product.edit',['id' => $product->id]) }}"> Edit </a>
                             </td>
                             <td>
                                 <form method="post" action="{{ route('admin.product.delete',['id' => $product->id]) }}">

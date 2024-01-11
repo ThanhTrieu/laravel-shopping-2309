@@ -26,4 +26,5 @@ Route::prefix('admin')->middleware(['check.admin.login'])->as('admin.')->group(f
     Route::get('add-product',[ProductController::class, 'add'])->name('product.add');
     Route::post('create',[ProductController::class, 'create'])->name('product.create');
     Route::delete('product/{id}',[ProductController::class, 'delete'])->name('product.delete');
+    Route::get('product/edit/{id}',[ProductController::class, 'edit'])->name('product.edit');
 });

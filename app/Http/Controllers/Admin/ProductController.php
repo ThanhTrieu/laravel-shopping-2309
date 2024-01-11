@@ -170,4 +170,36 @@ class ProductController extends Controller
         }
         return redirect()->back()->with('delete_fail', 'Delete Failure');
     }
+
+    public function edit(Request $request)
+    {
+        $idProduct = $request->id;
+        $idProduct = is_numeric($idProduct) ? $idProduct : 0;
+
+        $infoPd = Product::find($idProduct);
+        if(empty($infoPd)){
+            return view('admin.product.error');
+        } else {
+            $categories = Category::where(['status' => 1])->get();
+            $sizes  = Size::where(['status' => 1])->get();
+            $colors = Color::where(['status' => 1])->get();
+            $tags   = Tag::where(['status' => 1, 'type' => 1])->get();
+
+            // xu ly hien thi danh sach sanh
+            $galleryImage = $infoPd->list_image;
+            $arrGalleryImage = [];
+            if(!empty($galleryImage)){
+                $arrGalleryImage = json_decode($galleryImage, true);
+            }
+
+            return view('admin.product.edit',[
+                'categories' => $categories,
+                'sizes' => $sizes,
+                'colors' => $colors,
+                'tags' => $tags,
+                'infoPd' => $infoPd,
+                'arrGalleryImage' => $arrGalleryImage
+            ]);
+        }
+    }
 }
