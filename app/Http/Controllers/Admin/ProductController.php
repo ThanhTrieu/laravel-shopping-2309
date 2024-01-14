@@ -17,6 +17,7 @@ use function App\Helpers\slugVietnamese;
 use App\Models\ProductColor;
 use App\Models\ProductSize;
 use App\Models\ProductTag;
+use Illuminate\Support\Facades\URL;
 
 class ProductController extends Controller
 {
@@ -189,9 +190,17 @@ class ProductController extends Controller
             // xu ly hien thi danh sach sanh
             $galleryImage = $infoPd->list_image;
             $arrGalleryImage = [];
+            $arrGalleryImageView = [];
             if(!empty($galleryImage)){
                 $arrGalleryImage = json_decode($galleryImage, true);
+                foreach($arrGalleryImage as $img){
+                    $arrGalleryImageView[] = [
+                        'id' => $img,
+                        'src' => URL::to('/')."/uploads/images/products/".$img
+                    ];
+                }
             }
+            //dd(json_encode($arrGalleryImageView));
             // xu ly hien thi product - color
             $arrColors = ProductColor::select('color_id')->where('product_id',$idProduct)->get();
             $arrColors = !empty($arrColors) ? array_column($arrColors->toArray(), 'color_id') : [];
@@ -212,6 +221,7 @@ class ProductController extends Controller
                 'arrColors' => $arrColors,
                 'arrSizes' => $arrSizes,
                 'arrTags' => $arrTags,
+                'viewImages' => json_encode($arrGalleryImageView)
             ]);
         }
     }
@@ -267,13 +277,102 @@ class ProductController extends Controller
                             ->withInput();
                 }
 
+                // anh cu
+                $arrOldImage = $request->old_list_image;
+
                 foreach($request->file('list_image') as $img){
                     $nameImg = $img->getClientOriginalName();
                     $img->move(public_path() . '/uploads/images/products/', $nameImg);
                     $arrayImages[] = $nameImg;
                 }
+                // lay ca anh cu va anh moi
+                $arrayImages = array_merge($arrOldImage, $arrayImages);
+            } else {
+                $arrayImages = $request->old_list_image;
             }
 
+
+            // kiem tra image
+            $imageUpdate = $infoPd->image; // lay lai cai anh cu
+            if($request->hasFile('image')){
+                $validatorImgPd = Validator::make($request->all(),[
+                    'image' => ['required', 'max:2048', 'mimes:jpg,png,jpeg,gif,svg'],
+                ],[
+                    'image.required' => 'Vui long chon anh san pham',
+                    'image.mimes' => 'Anh chi chap nhan : jpg,png,jpeg,gif,svg',
+                    'image.max' => 'Kich thuoc anh khong vuot qua 2mb',
+                ]);
+                if ($validatorImgPd->fails()) {
+                    return redirect()->back()
+                            ->withErrors($validatorImgPd)
+                            ->withInput();
+                }
+                // tien hanh upload anh - cap nhat lai anh vao database
+                $imageUpdate = $request->file('image')->getClientOriginalName();
+                $request->file('image')->move(public_path() . '/uploads/images/products/', $imageUpdate);
+            }
+            // cap nhat du lieu vao bang product.
+            Product::where('id',$idProduct)
+                    ->update([
+                        'name' => $request->name,
+                        'slug' => slugVietnamese($request->name),
+                        'description' => $request->description,
+                        'summary' => $request->summary,
+                        'image' => $imageUpdate,
+                        'list_image' => empty($arrayImages) ? $infoPd->list_image : json_encode($arrayImages),
+                        'price' => $request->price,
+                        'sale_price' => $request->sale_price,
+                        'is_sale' => $checkIsSale === 'on' ? 1 : 0,
+                        'quantity' => $request->quantity,
+                        'status' => $request->status,
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ]);
+            // tien hanh update color - product
+            $arrColorProducts = $request->color_id;
+            if(!empty($arrColorProducts) && is_array($arrColorProducts)){
+                ProductColor::where('product_id',$idProduct)->delete();
+                $dataUpdateColor = [];
+                foreach($arrColorProducts as $color){
+                    $dataUpdateColor[] = [
+                        'product_id' => $idProduct,
+                        'color_id' => $color,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                ProductColor::insert($dataUpdateColor);
+            }
+            // tien hanh update Size - Product
+            $arrSizeProducts = $request->size_id;
+            if(!empty($arrSizeProducts) && is_array($arrSizeProducts)){
+                ProductSize::where('product_id',$idProduct)->delete();
+                $dataUpdateSize = [];
+                foreach($arrSizeProducts as $size){
+                    $dataUpdateSize[] = [
+                        'product_id' => $idProduct,
+                        'size_id' => $size,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                ProductSize::insert($dataUpdateSize);
+            }
+            // tien hanh update Tag - Product
+            $arrTagProducts = $request->tag_id;
+            if(!empty($arrTagProducts) && is_array($arrTagProducts)){
+                ProductTag::where('product_id',$idProduct)->delete();
+                $dataUpdateTag = [];
+                foreach($arrTagProducts as $tag){
+                    $dataUpdateTag[] = [
+                        'product_id' => $idProduct,
+                        'tag_id' => $tag,
+                        'created_at' => date('Y-m-d H:i:s'),
+                        'updated_at' => date('Y-m-d H:i:s')
+                    ];
+                }
+                ProductTag::insert($dataUpdateTag);
+            }
+            return redirect()->route('admin.products')->with('update_success', 'Update Successful');
         }
     }
 }

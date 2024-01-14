@@ -5,6 +5,8 @@
 
 @push('stylesheets')
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Material+Icons+Outlined">
+    <link rel="stylesheet" href="{{ asset('admin/fileUpload/image-uploader.min.css') }}">
     <style>
         .mult-select-tag .wrapper { padding-left: 0 !important; }
         .ck-editor__editable { min-height: 800px; }
@@ -13,7 +15,8 @@
 
 @push('javascripts')
     <script src="https://cdn.ckeditor.com/ckeditor5/40.2.0/classic/ckeditor.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script> 
+    <script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
+    <script src="{{ asset('admin/fileUpload/image-uploader.min.js') }}"></script>
     <script>
         new MultiSelectTag('color_id', {
             rounded: true,    // default true
@@ -81,7 +84,15 @@
                     $('#sale_price').prop('disabled', true);
                 }
             });
-            
+            // xu ly giao dien upload anh
+            let listImage = {!! $viewImages !!};
+            $("#fileUpload").imageUploader({
+                preloaded: listImage,
+                maxSize: 2 * 1024 * 1024,
+                maxFiles: 10,
+                imagesInputName: 'list_image',
+                preloadedInputName: 'old_list_image',
+            });
         });
     </script>
 @endpush
@@ -217,11 +228,15 @@
                         </div>
                     </div>
                     <div class="col-sm-12 col-md-12">
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <label>Lists image gallery (choose multiple image)</label>
                             <input type="file" name="list_image[]" class="form-control" multiple />
+                        </div> --}}
+                        <div class="mb-3">
+                            <label>Lists image gallery (choose multiple image)</label>
+                            <div id="fileUpload"></div>
                         </div>
-                        @if (!empty($arrGalleryImage))
+                        {{-- @if (!empty($arrGalleryImage))
                             <div class="mb-3">
                                 <div class="row">
                                     @foreach ($arrGalleryImage as $img)
@@ -231,7 +246,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                        @endif
+                        @endif --}}
                         <div class="mb-3">
                             <label>Description</label>
                             <textarea class="form-control" name="description" rows="10" id="editor">{!! $infoPd->description !!}</textarea>

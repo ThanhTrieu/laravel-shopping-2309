@@ -50,6 +50,11 @@
                     <p class="mb-0">{{ Session::get('insert_success') }}</p>
                 </div>
             @endif
+            @if (Session::has('update_success'))
+                <div class="alert alert-success">
+                    <p class="mb-0">{{ Session::get('update_success') }}</p>
+                </div>
+            @endif
             @if (Session::has('delete_success'))
                 <div class="alert alert-success">
                     <p class="mb-0">{{ Session::get('delete_success') }}</p>
