@@ -51,7 +51,7 @@
                 <!-- Filter -->
                 <div class="dis-none panel-filter w-full p-t-10">
                     <div class="wrap-filter flex-w bg6 w-full p-lr-40 p-t-27 p-lr-15-sm">
-                        <div class="filter-col1 p-r-15 p-b-27">
+                        {{-- <div class="filter-col1 p-r-15 p-b-27">
                             <div class="mtext-102 cl2 p-b-15">
                                 Sort By
                             </div>
@@ -93,7 +93,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </div>
+                        </div> --}}
 
                         <div class="filter-col2 p-r-15 p-b-27">
                             <div class="mtext-102 cl2 p-b-15">
@@ -102,37 +102,37 @@
 
                             <ul>
                                 <li class="p-b-6">
-                                    <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
+                                    <a href="{{ route('frontend.home') }}" class="filter-link stext-106 trans-04 filter-link-active">
                                         All
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="#" class="filter-link stext-106 trans-04">
+                                    <a href="{{ route('frontend.home',['from_price'=> 10000, 'to_price' => 50000]) }}" class="filter-link stext-106 trans-04">
                                         $0.00 - $50.00
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="#" class="filter-link stext-106 trans-04">
+                                    <a href="{{ route('frontend.home',['from_price'=> 50000, 'to_price' => 100000]) }}" class="filter-link stext-106 trans-04">
                                         $50.00 - $100.00
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="#" class="filter-link stext-106 trans-04">
+                                    <a href="{{ route('frontend.home',['from_price'=> 100000, 'to_price' => 150000]) }}" class="filter-link stext-106 trans-04">
                                         $100.00 - $150.00
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="#" class="filter-link stext-106 trans-04">
+                                    <a href="{{ route('frontend.home',['from_price'=> 150000, 'to_price' => 200000]) }}" class="filter-link stext-106 trans-04">
                                         $150.00 - $200.00
                                     </a>
                                 </li>
 
                                 <li class="p-b-6">
-                                    <a href="#" class="filter-link stext-106 trans-04">
+                                    <a href="{{ route('frontend.home',['from_price'=> 200000, 'to_price' => 200000]) }}" class="filter-link stext-106 trans-04">
                                         $200.00+
                                     </a>
                                 </li>
@@ -145,65 +145,17 @@
                             </div>
 
                             <ul>
+                                @foreach ($colors as $color)
                                 <li class="p-b-6">
-                                    <span class="fs-15 lh-12 m-r-6" style="color: #222;">
+                                    <span class="fs-15 lh-12 m-r-6" style="color: {{ $color->code }};">
                                         <i class="zmdi zmdi-circle"></i>
                                     </span>
 
-                                    <a href="#" class="filter-link stext-106 trans-04">
-                                        Black
+                                    <a href="{{ route('frontend.home',['color' => $color->slug]) }}" class="filter-link stext-106 trans-04">
+                                        {{ $color->name }}
                                     </a>
                                 </li>
-
-                                <li class="p-b-6">
-                                    <span class="fs-15 lh-12 m-r-6" style="color: #4272d7;">
-                                        <i class="zmdi zmdi-circle"></i>
-                                    </span>
-
-                                    <a href="#" class="filter-link stext-106 trans-04 filter-link-active">
-                                        Blue
-                                    </a>
-                                </li>
-
-                                <li class="p-b-6">
-                                    <span class="fs-15 lh-12 m-r-6" style="color: #b3b3b3;">
-                                        <i class="zmdi zmdi-circle"></i>
-                                    </span>
-
-                                    <a href="#" class="filter-link stext-106 trans-04">
-                                        Grey
-                                    </a>
-                                </li>
-
-                                <li class="p-b-6">
-                                    <span class="fs-15 lh-12 m-r-6" style="color: #00ad5f;">
-                                        <i class="zmdi zmdi-circle"></i>
-                                    </span>
-
-                                    <a href="#" class="filter-link stext-106 trans-04">
-                                        Green
-                                    </a>
-                                </li>
-
-                                <li class="p-b-6">
-                                    <span class="fs-15 lh-12 m-r-6" style="color: #fa4251;">
-                                        <i class="zmdi zmdi-circle"></i>
-                                    </span>
-
-                                    <a href="#" class="filter-link stext-106 trans-04">
-                                        Red
-                                    </a>
-                                </li>
-
-                                <li class="p-b-6">
-                                    <span class="fs-15 lh-12 m-r-6" style="color: #aaa;">
-                                        <i class="zmdi zmdi-circle-o"></i>
-                                    </span>
-
-                                    <a href="#" class="filter-link stext-106 trans-04">
-                                        White
-                                    </a>
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
 
@@ -213,30 +165,13 @@
                             </div>
 
                             <div class="flex-w p-t-4 m-r--5">
-                                <a href="#"
-                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                    Fashion
-                                </a>
-
-                                <a href="#"
-                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                    Lifestyle
-                                </a>
-
-                                <a href="#"
-                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                    Denim
-                                </a>
-
-                                <a href="#"
-                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                    Streetstyle
-                                </a>
-
-                                <a href="#"
-                                    class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
-                                    Crafts
-                                </a>
+                                @foreach ($tags as $tag)
+                                    <a href="{{ route('frontend.home',['tag'=>$tag->slug]) }}"
+                                        class="flex-c-m stext-107 cl6 size-301 bor7 p-lr-15 hov-tag1 trans-04 m-r-5 m-b-5">
+                                        {{ $tag->name }}
+                                    </a>
+                                @endforeach
+                                
                             </div>
                         </div>
                     </div>
@@ -253,7 +188,7 @@
                             </div>
                             <div class="block2-txt flex-w flex-t p-t-14">
                                 <div class="block2-txt-child1 flex-col-l ">
-                                    <a href="#" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
+                                    <a href="{{ route('frontend.product.detail',['slug' => $item->slug, 'id' => $item->id]) }}" class="stext-104 cl4 hov-cl1 trans-04 js-name-b2 p-b-6">
                                         {{ $item->name }}
                                     </a>
                                     <span class="stext-105 cl3">

@@ -1,4 +1,4 @@
-<header>
+<header class="header-v4">
     <!-- Header desktop -->
     <div class="container-menu-desktop">
         <!-- Topbar -->
