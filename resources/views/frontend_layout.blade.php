@@ -4,6 +4,7 @@
 	<title>@yield('title')</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="csrf-token" content="{{ csrf_token() }}">
 <!--===============================================================================================-->	
 	<link rel="icon" type="image/png" href="{{ asset('frontend/images/icons/favicon.png') }}"/>
 <!--===============================================================================================-->
@@ -145,14 +146,14 @@
 		});
 
 		/*---------------------------------------------*/
-
+		/*
 		$('.js-addcart-detail').each(function(){
 			var nameProduct = $(this).parent().parent().parent().parent().find('.js-name-detail').html();
 			$(this).on('click', function(){
 				swal(nameProduct, "is added to cart !", "success");
 			});
 		});
-	
+		*/
 	</script>
 <!--===============================================================================================-->
 	<script src="{{ asset('frontend/vendor/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
@@ -173,6 +174,15 @@
 	</script>
 <!--===============================================================================================-->
 	<script src="{{ asset('frontend/js/main.js') }}"></script>
+	<script>
+		$(function(){
+			$.ajaxSetup({
+				headers: {
+					'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+				}
+			});
+		});
+	</script>
     @stack('javascripts')
 </body>
 </html>
