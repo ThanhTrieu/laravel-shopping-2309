@@ -278,7 +278,7 @@ class ProductController extends Controller
                 }
 
                 // anh cu
-                $arrOldImage = $request->old_list_image;
+                $arrOldImage = !empty($request->old_list_image) ? $request->old_list_image : [];
 
                 foreach($request->file('list_image') as $img){
                     $nameImg = $img->getClientOriginalName();
