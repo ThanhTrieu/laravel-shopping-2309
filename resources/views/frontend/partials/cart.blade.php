@@ -14,34 +14,43 @@
         
         <div class="header-cart-content flex-w js-pscroll">
             <ul class="header-cart-wrapitem w-full">
-                <li class="header-cart-item flex-w flex-t m-b-12">
-                    <div class="header-cart-item-img">
-                        <img src="images/item-cart-01.jpg" alt="IMG">
-                    </div>
-
-                    <div class="header-cart-item-txt p-t-8">
-                        <a href="#" class="header-cart-item-name m-b-18 hov-cl1 trans-04">
-                            White Shirt Pleat
-                        </a>
-
-                        <span class="header-cart-item-info">
-                            1 x $19.00
-                        </span>
-                    </div>
-                </li>
+                @php
+                    $totalMoney = 0;
+                @endphp
+                @foreach ($data['cart'] as $cart )
+                    @php
+                        $totalMoney += ($cart->price * $cart->qty);
+                    @endphp
+                    <li class="header-cart-item flex-w flex-t m-b-12">
+                        <div class="header-cart-item-img">
+                            <img src="{{ URL::to('/') }}/uploads/images/products/{{ $cart->options->image }}" alt="{{ $cart->name }}">
+                        </div>
+                        <div class="header-cart-item-txt p-t-8">
+                            <a href="#" class="header-cart-item-name bold hov-cl1 trans-04">
+                                {{ $cart->name }}
+                            </a>
+                            <span class="header-cart-item-info">
+                                Size: {{ $cart->options->size }}
+                            </span>
+                            <span class="header-cart-item-info">
+                                Color: {{ $cart->options->color }}
+                            </span>
+                            <span class="header-cart-item-info">
+                                ${{ number_format($cart->price) }}
+                            </span>
+                            <input style="width: 60%;" value="{{ $cart->qty }}" class="form-control border p-1 qty-{{ $cart->rowId }}" type="number" min="1" max="10" />
+                            <button id="{{ $cart->rowId }}" class="btn btn-sm btn-danger mt-1 js-remove-cart"> Remove </button>
+                            <button id="{{ $cart->rowId }}" class="btn btn-sm btn-primary mt-1 js-update-cart"> Update </button>
+                        </div>
+                    </li>
+                @endforeach
             </ul>
-            
             <div class="w-full">
                 <div class="header-cart-total w-full p-tb-40">
-                    Total: $75.00
+                    Total: $ {{ number_format($totalMoney) }}
                 </div>
-
                 <div class="header-cart-buttons flex-w w-full">
-                    <a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-r-8 m-b-10">
-                        View Cart
-                    </a>
-
-                    <a href="shoping-cart.html" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
+                    <a href="#" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
                         Check Out
                     </a>
                 </div>
@@ -49,3 +58,55 @@
         </div>
     </div>
 </div>
+@push('javascripts')
+<script>
+    $(function(){
+        $('.js-update-cart').click(function(){
+            let self = $(this);
+            let rowId = self.attr('id').trim();
+            let qtyPd = $(`.qty-${rowId}`).val().trim();
+            if($.isNumeric(qtyPd) && rowId !== ''){
+                $.ajax({
+                    url: "{{ route('frontend.cart.update') }}",
+                    type: "post",
+                    data: {rowId, qtyPd},
+                    beforeSend: function () {
+                        self.text('Processing ...');
+                    },
+                    success: function(result){
+                        self.text('Update');
+                        if(result.cod === 200){
+                            swal("Message", result.mess, "success");
+                            window.location.reload(true);
+                        } else {
+                            swal("Message", result.error, "error");
+                        }
+                    }
+                })
+            }
+        });
+
+        $('.js-remove-cart').click(function(){
+            let self = $(this);
+            let rowId = self.attr('id').trim();
+            $.ajax({
+                url: "{{ route('frontend.cart.remove') }}",
+                type: "post",
+                data: { rowId },
+                beforeSend: function () {
+                    self.text('Processing ...');
+                },
+                success: function(result){
+                    self.text('Remove');
+                    if(result.cod === 200){
+                        swal("Message", result.mess, "success");
+                        window.location.reload(true);
+                    } else {
+                        swal("Message", result.error, "error");
+                    }
+                }
+            })
+        });
+    });
+</script>
+@endpush

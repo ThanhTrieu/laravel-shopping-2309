@@ -404,6 +404,8 @@
 							$('.js-addcart-detail').text('Add to cart');
 							if(result.cod === 200){
 								swal("Message", result.mess, "success");
+								// load lai trang
+								window.location.reload(true);
 							} else {
 								swal("Message", result.error, "error");
 							}

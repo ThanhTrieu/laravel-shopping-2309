@@ -22,4 +22,6 @@ Route::as('frontend.')->group(function(){
 
     // Shopping cart
     Route::post('add-cart',[CartController::class, 'add'])->name('cart.add');
+    Route::post('remove-cart', [CartController::class, 'remove'])->name('cart.remove');
+    Route::post('update-cart', [CartController::class, 'update'])->name('cart.update');
 });

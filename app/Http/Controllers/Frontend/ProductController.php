@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Color;
 use App\Models\Size;
-use Gloudemans\Shoppingcart\Facades\Cart;
 
 class ProductController extends Controller
 {

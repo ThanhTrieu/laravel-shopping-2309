@@ -10,9 +10,17 @@ class FrontendController extends Controller
 {
     public function __construct()
     {
-        $carts = Cart::content();
-        View::share('data', [
-            'cart' => $carts
-        ]);
+        $this->middleware(function ($request, $next) {
+            $carts = Cart::content();
+            $cartTotal = Cart::total();
+            $itemCarts = Cart::count();
+            View::share('data', [
+                'cart' => $carts,
+                'total' => $cartTotal,
+                'countCart' => $itemCarts,
+            ]);
+            
+            return $next($request);
+        });
     }
 }
