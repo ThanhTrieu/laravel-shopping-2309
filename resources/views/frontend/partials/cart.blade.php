@@ -49,11 +49,13 @@
                 <div class="header-cart-total w-full p-tb-40">
                     Total: $ {{ number_format($totalMoney) }}
                 </div>
-                <div class="header-cart-buttons flex-w w-full">
-                    <a href="#" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
-                        Check Out
-                    </a>
-                </div>
+                @if ($data['countCart'] > 0)
+                    <div class="header-cart-buttons flex-w w-full">
+                        <a href="{{ route('frontend.order.checkout') }}" class="flex-c-m stext-101 cl0 size-107 bg3 bor2 hov-btn3 p-lr-15 trans-04 m-b-10">
+                            Check Out
+                        </a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>

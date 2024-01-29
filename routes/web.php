@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\HomeController;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\CartController;
+use App\Http\Controllers\Frontend\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,11 +18,15 @@ use App\Http\Controllers\Frontend\CartController;
 */
 
 Route::as('frontend.')->group(function(){
-    Route::get('/',[HomeController::class, 'index'])->name('home');
-    Route::get('{slug}~{id}',[ProductController::class, 'detail'])->name('product.detail');
+    Route::get('/', [HomeController::class, 'index'])->name('home');
+    Route::get('{slug}~{id}', [ProductController::class, 'detail'])->name('product.detail');
 
     // Shopping cart
-    Route::post('add-cart',[CartController::class, 'add'])->name('cart.add');
+    Route::post('add-cart', [CartController::class, 'add'])->name('cart.add');
     Route::post('remove-cart', [CartController::class, 'remove'])->name('cart.remove');
     Route::post('update-cart', [CartController::class, 'update'])->name('cart.update');
+
+    //checkout
+    Route::get('checkout', [OrderController::class, 'checkout'])->name('order.checkout');
+    Route::post('payment', [OrderController::class, 'payment'])->name('order.payment');
 });
